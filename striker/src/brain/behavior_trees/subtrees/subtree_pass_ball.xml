@@ -1,0 +1,38 @@
+<root BTCPP_format="4">
+  <BehaviorTree ID="SubtreePassBall">
+    <Sequence name="root">
+      <!-- 确保能看到球 -->
+      <SubTree ID="CamFindAndTrackBall" _autoremap="true"/>
+      
+      <!-- 1. 传球决策，输出目标点和目标ID -->
+      <PassBall name="DecidePassTarget"
+                min_pass_dist="2.0"
+                max_pass_dist="5.0"
+                pass_angle_tolerance="0.3"
+                target_id="-1"/>
+      
+      <!-- 2. 移动到球后方 -->
+      <MoveToPoseOnField name="MoveToPassPosition"
+                         x="{pass_target_x}" 
+                         y="{pass_target_y}" 
+                         theta="{pass_target_theta}"
+                         vx_limit="0.4"
+                         vy_limit="0.3"
+                         vtheta_limit="1.0"/>
+      
+      <!-- 3. 微调朝向 -->
+      <Adjust name="AdjustOrientation" 
+              position="offense"
+              turn_threshold="0.1"
+              vx_limit="0.2"
+              vy_limit="0.2"
+              vtheta_limit="0.5"/>
+      
+      <!-- 4. 踢球 -->
+      <Kick name="KickBall"
+            vx_limit="1.0"
+            vy_limit="0.3"
+            min_msec_kick="800"/>
+    </Sequence>
+  </BehaviorTree>
+</root> 

@@ -1,0 +1,22 @@
+一 传球策略
+1、team_communication_msg.h中TeamCommunicationMsg结构体中新增double robot_x、double robot_y、double robot_theta;
+
+2、brain_communication.h中33行增加储存队友位置信息的struct和map
+
+3、brain_communication.cpp中unicastCommunication()函数336-338行增加：
+        msg.robot_x = brain->data->robotPoseToField.x;
+        msg.robot_y = brain->data->robotPoseToField.y;
+        msg.robot_theta = brain->data->robotPoseToField.theta;
+将机器人的位置信息和朝向信息放进msg里传给每一位队员
+
+4、brain_communication.cpp中spinCommunicationReceiver()436-438行增加：
+        auto time_now = brain->get_clock()->now();
+        std::lock_guard<std::mutex> lock(_teammate_addresses_mutex);
+        _teammate_positions[msg.playerId] = {msg.robot_x, msg.robot_y, msg.robot_theta, time_now};
+将其他机器人单播发送的位置信息存到2中定义的map中
+
+5、brain_tree.h的440行中声明passball节点，在brain_tree.cpp的868行定义passball节点
+passball节点负责拿到传球需要的信息，具体执行在passball行为树中
+
+6、新建passball行为树
+
