@@ -1,4 +1,5 @@
-
+![image](https://github.com/MrLi777-afk/NCE33demo/blob/main/images/paly.jpg)
+![image](https://github.com/MrLi777-afk/NCE33demo/blob/main/images/photo.jpg)
 vim指令，打开后用i（a）进入插入文本模式
 u撤销
 :w保存文件
